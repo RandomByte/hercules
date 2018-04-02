@@ -1,0 +1,25 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hercules-mosquitto
+spec:
+  selector:
+    matchLabels:
+      app: hercules-mosquitto
+      role: master
+      tier: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hercules-mosquitto
+        role: master
+        tier: backend
+    spec:
+      containers:
+      - name: master
+        image: randombyte/arm-alpine-mosquitto:latest
+        ports:
+        - containerPort: 1883
+        

@@ -1,0 +1,6 @@
+---
+context: kubernetes-admin@kubernetes
+global:
+  external_ip: <external ip>
+include:
+  - name: mosquitto
