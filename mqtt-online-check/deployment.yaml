@@ -1,0 +1,29 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hercules-mqtt-online-check
+spec:
+  selector:
+    matchLabels:
+      app: hercules-mqtt-online-check
+      role: master
+      tier: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hercules-mqtt-online-check
+        role: master
+        tier: backend
+    spec:
+      containers:
+      - name: master
+        image: randombyte/armhf-mqtt-online-check:latest
+        env:
+        - name: MQTT_ONLINE_CHECK_HOSTNAME
+          value: {{ .mqttOnlineCheckHostname }}
+        - name: MQTT_ONLINE_CHECK_MQTT_TOPIC
+          value: Home/Online
+        - name: MQTT_ONLINE_CHECK_MQTT_BROKER
+          value: mqtt://hercules-mosquitto
