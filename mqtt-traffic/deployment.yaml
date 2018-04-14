@@ -1,0 +1,35 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hercules-mqtt-traffic
+spec:
+  selector:
+    matchLabels:
+      app: hercules-mqtt-traffic
+      role: master
+      tier: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hercules-mqtt-traffic
+        role: master
+        tier: backend
+    spec:
+      containers:
+      - name: master
+        image: randombyte/armhf-mqtt-traffic:latest
+        env:
+        - name: MQTT_TRAFFIC_ORIGIN
+          value: {{ .mqttTrafficOrigin }}
+        - name: MQTT_TRAFFIC_DESTINATION
+          value: {{ .mqttTrafficDestination }}
+        - name: MQTT_TRAFFIC_LANGUAGE
+          value: {{ .mqttTrafficLanguage }}
+        - name: MQTT_TRAFFIC_API_KEY
+          value: {{ .mqttTrafficApiKey }}
+        - name: MQTT_TRAFFIC_MQTT_BROKER
+          value: mqtt://hercules-mosquitto
+        - name: MQTT_TRAFFIC_MQTT_TOPIC
+          value: Home/WorkTraffic

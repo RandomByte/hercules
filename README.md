@@ -1,8 +1,9 @@
 # [Hercules](https://github.com/RandomByte/hercules) Home Automation on Kubernetes
 
-🚧 Not really ready for anything yet
+🚧 Work in progress. Not really ready for anything yet
 
-All Docker images used in this project are **armhf (Raspberry Pi et al.) only.**
+**All Docker images used in this project are built for the armhf architecture (Raspberry Pi et al.) only.**  
+However, it should be fairly easy to set this up on other architectures, you just need to build the Docker images yourself.
 
 
 ## Prerequisites
@@ -17,13 +18,25 @@ All Docker images used in this project are **armhf (Raspberry Pi et al.) only.**
 	```sh
 	cp prod-cluster.yaml.example prod-cluster.yaml
 	```
-1. In the file `prod-cluster.yaml`, replace all placeholders (marked with `<` and `>`) with the appropriate values
+1. In the file `prod-cluster.yaml`, replace all variables with the appropriate values
 	- `<external ip>`: Enter the external IP address of one of your nodes (preferably the 'master'), that should be used by external services to communicate with the MQTT and other servers within your cluster
 
 1. Apply the template and start the Hercules infrastructure on your Kubernetes cluster (this will internally call kubectl):
 	```sh
 	kontemplate apply prod-cluster.yaml
 	```
+
+## Modules
+Modules that are either running within the Kubernetes cluster or on external devices such as sensors. Communication happens via MQTT.
+
+### Cluster Services
+- [RandomByte/mqtt-traffic](https://github.com/RandomByte/mqtt-traffic)
+- [RandomByte/mqtt-online-check](https://github.com/RandomByte/mqtt-online-check)
+
+### External Services
+- [RandomByte/esp8266-mqtt-light-sensor](https://github.com/RandomByte/esp8266-mqtt-light-sensor)
+- [RandomByte/mqtt-nodemotion](https://github.com/RandomByte/mqtt-nodemotion)
+- [RandomByte/mqtt-wifi-scanner](https://github.com/RandomByte/mqtt-wifi-scanner)
 
 ## License
 Released under the [MIT License](https://opensource.org/licenses/MIT).
