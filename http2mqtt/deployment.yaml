@@ -1,0 +1,27 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hercules-http2mqtt
+spec:
+  selector:
+    matchLabels:
+      app: hercules-http2mqtt
+      role: master
+      tier: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hercules-http2mqtt
+        role: master
+        tier: backend
+    spec:
+      containers:
+      - name: master
+        image: randombyte/armhf-http2mqtt
+        env:
+        - name: BROKER_URL
+          value: mqtt://hercules-mosquitto
+        - name: HTTP_PORT
+          value: "{{ .http2mqttHttpPort }}"

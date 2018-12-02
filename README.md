@@ -32,6 +32,8 @@ Modules that are either running within the Kubernetes cluster or on external dev
 ### Cluster Services
 - [RandomByte/mqtt-traffic](https://github.com/RandomByte/mqtt-traffic)
 - [RandomByte/mqtt-online-check](https://github.com/RandomByte/mqtt-online-check)
+- [oliverlorenz/http2mqtt](https://github.com/oliverlorenz/http2mqtt)
+	- To publish mqtt messages via the iOS Shortcuts app
 
 ### External Services
 - [RandomByte/esp8266-mqtt-light-sensor](https://github.com/RandomByte/esp8266-mqtt-light-sensor)

@@ -13,3 +13,6 @@ include:
   - name: mqtt-online-check
     values:
       mqttOnlineCheckHostname: "google.com"
+  - name: http2mqtt
+    values:
+      httpPort: 9001
