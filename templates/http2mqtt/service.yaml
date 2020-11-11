@@ -11,10 +11,10 @@ spec:
   type: NodePort
   ports:
   - protocol: TCP
-    port: {{ .http2mqttHttpPort }}
+    port: {{ .Values.http2mqtt.httpPort }}
   selector:
     app: hercules-http2mqtt
     role: master
     tier: backend
   externalIPs:
-    - {{ .external_ip }}
+    - {{ .Values.externalIp }}

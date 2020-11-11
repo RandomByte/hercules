@@ -22,14 +22,14 @@ spec:
         image: randombyte/armhf-mqtt-traffic:latest
         env:
         - name: MQTT_TRAFFIC_ORIGIN
-          value: {{ .mqttTrafficOrigin }}
+          value: {{ .Values.mqttTraffic.origin | quote }}
         - name: MQTT_TRAFFIC_DESTINATION
-          value: {{ .mqttTrafficDestination }}
+          value: {{ .Values.mqttTraffic.destination | quote }}
         - name: MQTT_TRAFFIC_LANGUAGE
-          value: {{ .mqttTrafficLanguage }}
+          value: {{ .Values.mqttTraffic.language | quote }}
         - name: MQTT_TRAFFIC_API_KEY
-          value: {{ .mqttTrafficApiKey }}
+          value: {{ .Values.mqttTraffic.apiKey | quote }}
         - name: MQTT_TRAFFIC_MQTT_BROKER
-          value: mqtt://hercules-mosquitto
+          value: "mqtt://hercules-mosquitto"
         - name: MQTT_TRAFFIC_MQTT_TOPIC
-          value: Home/WorkTraffic
+          value: "Home/WorkTraffic"

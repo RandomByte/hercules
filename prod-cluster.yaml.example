@@ -7,7 +7,7 @@ include:
     values:
       mqttTrafficOrigin: "Frankfurt"
       mqttTrafficDestination: "Stuttgart"
-      mqttTrafficLanguage: en
+      mqttTrafficLanguage: "en"
       mqttTrafficApiKey: "<your Google Maps Web Service API key, see https://github.com/googlemaps/google-maps-services-js#api-keys>"
   - name: mqtt-online-check
     values:

@@ -22,8 +22,9 @@ spec:
         image: randombyte/armhf-mqtt-online-check:latest
         env:
         - name: MQTT_ONLINE_CHECK_HOSTNAME
-          value: {{ .mqttOnlineCheckHostname }}
+          value: {{ .Values.mqttOnlineCheck.checkHostname | quote }}
         - name: MQTT_ONLINE_CHECK_MQTT_TOPIC
-          value: Home/Online
+          value: "Home/Online"
         - name: MQTT_ONLINE_CHECK_MQTT_BROKER
-          value: mqtt://hercules-mosquitto
+          value: "mqtt://hercules-mosquitto
+"

@@ -64,3 +64,7 @@ typings/
 prod-cluster.yaml
 stage-cluster.yaml
 dev-cluster.yaml
+prod-values.yaml
+dev-values.yaml
+current-pods.yaml
+current-services.yaml

@@ -17,4 +17,4 @@ spec:
     role: master
     tier: backend
   externalIPs:
-    - {{ .external_ip }}
+    - {{ .Values.externalIp }}
