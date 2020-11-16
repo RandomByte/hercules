@@ -51,12 +51,57 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
-Create the name of the service account to use
+Create a default fully qualified app name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+If release name contains chart name it will be used as a full name.
 */}}
-{{- define "hercules.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "hercules.fullname" .) .Values.serviceAccount.name }}
+{{- define "hercules.http2mqtt.fullname" -}}
+{{- $name := default .Chart.Name .Values.nameOverride }}
+{{- if contains $name .Release.Name }}
+{{- printf "%s-%s" .Release.Name "http2mqtt" | trunc 63 | trimSuffix "-" }}
 {{- else }}
-{{- default "default" .Values.serviceAccount.name }}
+{{- printf "%s-%s-%s" .Release.Name $name "http2mqtt" | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+
+{{/*
+Create a default fully qualified app name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+If release name contains chart name it will be used as a full name.
+*/}}
+{{- define "hercules.mosquitto.fullname" -}}
+{{- $name := default .Chart.Name .Values.nameOverride }}
+{{- if contains $name .Release.Name }}
+{{- printf "%s-%s" .Release.Name "mosquitto" | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s-%s" .Release.Name $name "mosquitto" | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+
+{{/*
+Create a default fully qualified app name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+If release name contains chart name it will be used as a full name.
+*/}}
+{{- define "hercules.mqttOnlineCheck.fullname" -}}
+{{- $name := default .Chart.Name .Values.nameOverride }}
+{{- if contains $name .Release.Name }}
+{{- printf "%s-%s" .Release.Name "mqtt-online-check" | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s-%s" .Release.Name $name "mqtt-online-check" | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+
+{{/*
+Create a default fully qualified app name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+If release name contains chart name it will be used as a full name.
+*/}}
+{{- define "hercules.mqttTraffic.fullname" -}}
+{{- $name := default .Chart.Name .Values.nameOverride }}
+{{- if contains $name .Release.Name }}
+{{- printf "%s-%s" .Release.Name "mqtt-traffic" | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s-%s" .Release.Name $name "mqtt-traffic" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 {{- end }}

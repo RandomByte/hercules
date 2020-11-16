@@ -2,20 +2,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hercules-mosquitto
+  name: {{ include "hercules.mosquitto.fullname" . }}
+  labels:
+    {{- include "hercules.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
       app: hercules-mosquitto
-      role: master
-      tier: backend
+      {{- include "hercules.selectorLabels" . | nindent 6 }}
   replicas: 1
   template:
     metadata:
       labels:
         app: hercules-mosquitto
-        role: master
-        tier: backend
+        {{- include "hercules.selectorLabels" . | nindent 8 }}
     spec:
       containers:
       - name: master

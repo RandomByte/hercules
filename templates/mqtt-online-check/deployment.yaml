@@ -2,20 +2,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hercules-mqtt-online-check
+  name: {{ include "hercules.mqttOnlineCheck.fullname" . }}
+  labels:
+    {{- include "hercules.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
       app: hercules-mqtt-online-check
-      role: master
-      tier: backend
+      {{- include "hercules.selectorLabels" . | nindent 6 }}
   replicas: 1
   template:
     metadata:
       labels:
         app: hercules-mqtt-online-check
-        role: master
-        tier: backend
+        {{- include "hercules.selectorLabels" . | nindent 8 }}
     spec:
       containers:
       - name: master
@@ -26,5 +26,4 @@ spec:
         - name: MQTT_ONLINE_CHECK_MQTT_TOPIC
           value: "Home/Online"
         - name: MQTT_ONLINE_CHECK_MQTT_BROKER
-          value: "mqtt://hercules-mosquitto
-"
+          value: "mqtt://hercules-mosquitto"

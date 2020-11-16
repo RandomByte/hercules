@@ -2,11 +2,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: hercules-http2mqtt
+  name: {{ include "hercules.http2mqtt.fullname" . }}
   labels:
     app: hercules-http2mqtt
-    role: master
-    tier: backend
+    {{- include "hercules.labels" . | nindent 4 }}
 spec:
   type: NodePort
   ports:
@@ -14,7 +13,6 @@ spec:
     port: {{ .Values.http2mqtt.httpPort }}
   selector:
     app: hercules-http2mqtt
-    role: master
-    tier: backend
+    {{- include "hercules.selectorLabels" . | nindent 4 }}
   externalIPs:
     - {{ .Values.externalIp }}
