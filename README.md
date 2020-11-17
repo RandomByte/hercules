@@ -53,12 +53,5 @@ Modules that are either running within the Kubernetes cluster or on external dev
 - [RandomByte/mqtt-nodemotion](https://github.com/RandomByte/mqtt-nodemotion)
 - [RandomByte/mqtt-wifi-scanner](https://github.com/RandomByte/mqtt-wifi-scanner)
 
-## Miscellaneous
-### Updating modules
-**Example:** Updating the mqtt-traffic module to version 1.0.2
-```sh
-kubectl set image deployment/hercules-mqtt-traffic master=randombyte/armhf-mqtt-traffic:1.0.2
-```
-
 ## License
 Released under the [MIT License](https://opensource.org/licenses/MIT).
