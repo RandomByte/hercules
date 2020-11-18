@@ -17,3 +17,6 @@ data:
       topics = [
         "airlogger/#"
       ]
+      name_override = "mqtt-airlogger"
+      data_format = "value"
+      data_type = "float"
