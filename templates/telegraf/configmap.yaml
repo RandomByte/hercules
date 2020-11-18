@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "hercules.telegraf.fullname" . }}
+  labels:
+    {{- include "hercules.labels" . | nindent 4 }}
+data:
+  telegraf.conf: |+
+    [[outputs.influxdb]]
+      urls = ["http://{{ include "hercules.influxdb.fullname" . }}:8086"]
+      database = "herculesdb"
+      username = "hercules"
+      password = {{ .Values.influxdb.userPassword | quote }}
+      skip_database_creation = true
+    [[inputs.mqtt_consumer]]
+      servers = ["tcp://{{ include "hercules.mosquitto.fullname" . }}:1883"]
+      topics = [
+        "airlogger/#"
+      ]

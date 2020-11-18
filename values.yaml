@@ -16,3 +16,5 @@ influxdb:
   adminPassword: "admin-password"
   userPassword: "user-password"
   readOnlyUserPassword: "read-only-user-password"
+
+telegraf:

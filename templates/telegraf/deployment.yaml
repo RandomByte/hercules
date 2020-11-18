@@ -1,0 +1,29 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "hercules.telegraf.fullname" . }}
+  labels:
+    {{- include "hercules.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: hercules-mqtt-online-check
+      {{- include "hercules.selectorLabels" . | nindent 6 }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hercules-mqtt-online-check
+        {{- include "hercules.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: master
+        image: telegraf:1.16
+        volumeMounts:
+          - name: config
+            mountPath: /etc/telegraf
+      volumes:
+      - name: config
+        configMap:
+          name: {{ include "hercules.telegraf.fullname" . }}

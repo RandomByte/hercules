@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "hercules.influxdb.fullname" . }}
+  labels:
+    app: hercules-influxdb
+    {{- include "hercules.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP # Only available within the cluster
+  ports:
+  - port: 8086
+  selector:
+    app: hercules-influxdb
+    {{- include "hercules.selectorLabels" . | nindent 4 }}
