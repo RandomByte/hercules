@@ -9,7 +9,7 @@ data:
     apiVersion: 1
     datasources:
       - name: InfluxDB
-        type: InfluxDB
+        type: influxdb
         access: proxy
         isDefault: true
         url: http://{{ include "hercules.influxdb.fullname" . }}:8086
@@ -17,3 +17,7 @@ data:
         secureJsonData:
           password: {{ .Values.influxdb.readOnlyUserPassword }}
         database: herculesdb
+        jsonData:
+          httpMode: POST
+          version: InfluxQL
+        version: 3
