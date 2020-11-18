@@ -5,3 +5,8 @@ mqttTraffic:
   destination: "Stuttgart"
   language: en
   apiKey: "<your Google Maps Web Service API key, see https://github.com/googlemaps/google-maps-services-js#api-keys>"
+
+influxdb:
+  adminPassword: "admin-password"
+  userPassword: "user-password"
+  readOnlyUserPassword: "read-only-user-password"
