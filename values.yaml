@@ -17,4 +17,5 @@ influxdb:
   userPassword: "user-password"
   readOnlyUserPassword: "read-only-user-password"
 
-telegraf:
+grafana:
+  adminPassword: "admin-password"

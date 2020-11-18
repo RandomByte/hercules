@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "hercules.grafana.fullname" . }}
+  labels:
+    {{- include "hercules.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: hercules-grafana
+      {{- include "hercules.selectorLabels" . | nindent 6 }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hercules-grafana
+        {{- include "hercules.selectorLabels" . | nindent 8 }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/grafana/configmap.yaml") . | sha256sum }}
+    spec:
+      containers:
+      - name: grafana
+        image: grafana/grafana:7.3.3
+        ports:
+        - containerPort: 3000
+        env:
+        - name: GF_SECURITY_ADMIN_USER
+          value: "admin"
+        - name: GF_SECURITY_ADMIN_PASSWORD
+          value: {{ .Values.grafana.adminPassword | quote }}
+        volumeMounts:
+          - name: config
+            mountPath: "/etc/grafana/provisioning/datasources/datasources.yaml"
+            subPath: datasources.yaml
+      volumes:
+      - name: config
+        configMap:
+          name: {{ include "hercules.grafana.fullname" . }}

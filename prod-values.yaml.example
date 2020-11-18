@@ -10,3 +10,6 @@ influxdb:
   adminPassword: "admin-password"
   userPassword: "user-password"
   readOnlyUserPassword: "read-only-user-password"
+
+grafana:
+  adminPassword: "admin-password"
