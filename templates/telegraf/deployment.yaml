@@ -16,6 +16,8 @@ spec:
       labels:
         app: hercules-mqtt-online-check
         {{- include "hercules.selectorLabels" . | nindent 8 }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/telegraf/configmap.yaml") . | sha256sum }}
     spec:
       containers:
       - name: master
