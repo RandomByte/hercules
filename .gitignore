@@ -60,11 +60,6 @@ typings/
 # Misc
 .DS_Store
 
-# kontemplate cluster configurations
-prod-cluster.yaml
-stage-cluster.yaml
-dev-cluster.yaml
+# Local Helm values files
 prod-values.yaml
 dev-values.yaml
-current-pods.yaml
-current-services.yaml
