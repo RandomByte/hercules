@@ -18,7 +18,7 @@ spec:
         {{- include "hercules.selectorLabels" . | nindent 8 }}
     spec:
       containers:
-      - name: master
+      - name: mqtt-online-check
         image: randombyte/armhf-mqtt-online-check:latest
         env:
         - name: MQTT_ONLINE_CHECK_HOSTNAME

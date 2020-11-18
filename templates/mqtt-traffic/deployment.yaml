@@ -18,7 +18,7 @@ spec:
         {{- include "hercules.selectorLabels" . | nindent 8 }}
     spec:
       containers:
-      - name: master
+      - name: mqtt-traffic
         image: randombyte/armhf-mqtt-traffic:latest
         env:
         - name: MQTT_TRAFFIC_ORIGIN

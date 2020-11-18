@@ -18,7 +18,7 @@ spec:
         {{- include "hercules.selectorLabels" . | nindent 8 }}
     spec:
       containers:
-      - name: master
+      - name: http2mqtt
         image: randombyte/armhf-http2mqtt
         env:
         - name: BROKER_URL
