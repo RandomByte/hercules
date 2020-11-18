@@ -22,6 +22,6 @@ spec:
         image: randombyte/armhf-http2mqtt
         env:
         - name: BROKER_URL
-          value: "mqtt://hercules-mosquitto"
+          value: "mqtt://{{ include "hercules.mosquitto.fullname" . }}"
         - name: HTTP_PORT
           value: {{ .Values.http2mqtt.httpPort | quote }}

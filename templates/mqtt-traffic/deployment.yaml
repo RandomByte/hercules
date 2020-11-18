@@ -30,6 +30,6 @@ spec:
         - name: MQTT_TRAFFIC_API_KEY
           value: {{ .Values.mqttTraffic.apiKey | quote }}
         - name: MQTT_TRAFFIC_MQTT_BROKER
-          value: "mqtt://hercules-mosquitto"
+          value: "mqtt://{{ include "hercules.mosquitto.fullname" . }}"
         - name: MQTT_TRAFFIC_MQTT_TOPIC
           value: "Home/WorkTraffic"

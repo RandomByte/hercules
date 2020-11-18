@@ -9,8 +9,7 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - protocol: TCP
-    port: {{ .Values.http2mqtt.httpPort }}
+  - port: {{ .Values.http2mqtt.httpPort }}
   selector:
     app: hercules-http2mqtt
     {{- include "hercules.selectorLabels" . | nindent 4 }}
