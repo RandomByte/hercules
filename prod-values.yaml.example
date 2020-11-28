@@ -7,9 +7,18 @@ mqttTraffic:
   apiKey: "<your Google Maps Web Service API key, see https://github.com/googlemaps/google-maps-services-js#api-keys>"
 
 influxdb:
-  adminPassword: "admin-password"
-  userPassword: "user-password"
-  readOnlyUserPassword: "read-only-user-password"
+  enabled: false
+  adminPassword: "admin_password"
+  userPassword: "user_password"
+  readOnlyUserPassword: "read_only_user_password"
+
+external_influxdb_v2:
+  enabled: false
+  url: "https://example.com:8086"
+  token: "influxdb_rw_token"
+  organization: "myorganization"
+  bucket: "mybucket"
 
 grafana:
-  adminPassword: "admin-password"
+  enabled: false
+  adminPassword: "admin_password"

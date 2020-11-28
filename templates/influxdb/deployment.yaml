@@ -1,3 +1,4 @@
+{{- if .Values.influxdb.enabled }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -39,3 +40,4 @@ spec:
           value: "hercules_read_only"
         - name: INFLUXDB_READ_USER_PASSWORD
           value: {{ .Values.influxdb.readOnlyUserPassword | quote }}
+{{- end }}

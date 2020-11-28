@@ -6,12 +6,20 @@ metadata:
     {{- include "hercules.labels" . | nindent 4 }}
 data:
   telegraf.conf: |+
+{{- if .Values.influxdb.enabled }}
     [[outputs.influxdb]]
       urls = ["http://{{ include "hercules.influxdb.fullname" . }}:8086"]
       database = "herculesdb"
       username = "hercules"
       password = {{ .Values.influxdb.userPassword | quote }}
       skip_database_creation = true
+{{- else if .Values.external_influxdb_v2.enabled }}
+    [[outputs.influxdb_v2]]
+      urls = [{{ .Values.external_influxdb_v2.url | quote }}]
+      token = {{ .Values.external_influxdb_v2.token | quote }}
+      organization = {{ .Values.external_influxdb_v2.organization | quote }}
+      bucket = {{ .Values.external_influxdb_v2.bucket | quote }}
+{{- end }}
     [[inputs.mqtt_consumer]]
       servers = ["tcp://{{ include "hercules.mosquitto.fullname" . }}:1883"]
       topics = [
