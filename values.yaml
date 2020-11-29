@@ -28,16 +28,10 @@ external_influxdb_v2:
   bucket: "mybucket"
 
 telegraf:
-  mqttValueTopics:
-    - topic: "Home/Air/+"
-      measurementName: "home-air-quality"
-      dataType: "float"
-  mqttJsonTopics:
-    - topic: "Home/Online"
-      measurementName: "home-online-state"
-      # Note: Numbers are automatically added as float fields
-      stringFields: |
-        ["online"]
+  mqttValues:
+    topics: |
+        ["Home/Air/+"]
+    measurementName: "home-air-quality"
 
 grafana:
   enabled: false
