@@ -32,4 +32,4 @@ spec:
         - name: MQTT_TRAFFIC_MQTT_BROKER
           value: "mqtt://{{ include "hercules.mosquitto.fullname" . }}"
         - name: MQTT_TRAFFIC_MQTT_TOPIC
-          value: "Home/WorkTraffic"
+          value: {{ .Values.mqttTraffic.mqttTopic | quote }}

@@ -5,9 +5,11 @@ mqttTraffic:
   destination: "Stuttgart"
   language: "en"
   apiKey: "<your Google Maps Web Service API key, see https://github.com/googlemaps/google-maps-services-js#api-keys>"
+  mqttTopic: "Traffic/MyDailyRoute"
 
 mqttOnlineCheck:
   checkHostname: "google.com"
+  mqttTopic: "Home/Online"
 
 http2mqtt:
   httpPort: 9001
@@ -24,6 +26,18 @@ external_influxdb_v2:
   token: "influxdb_rw_token"
   organization: "myorganization"
   bucket: "mybucket"
+
+telegraf:
+  mqttValueTopics:
+    - topic: "Home/Air/+"
+      measurementName: "home-air-quality"
+      dataType: "float"
+  mqttJsonTopics:
+    - topic: "Home/Online"
+      measurementName: "home-online-state"
+      # Note: Numbers are automatically added as float fields
+      stringFields: |
+        ["online"]
 
 grafana:
   enabled: false

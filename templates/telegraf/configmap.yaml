@@ -20,11 +20,30 @@ data:
       organization = {{ .Values.external_influxdb_v2.organization | quote }}
       bucket = {{ .Values.external_influxdb_v2.bucket | quote }}
 {{- end }}
+    {{- range .Values.telegraf.mqttValueTopics }}
     [[inputs.mqtt_consumer]]
-      servers = ["tcp://{{ include "hercules.mosquitto.fullname" . }}:1883"]
+      servers = ["tcp://{{ include "hercules.mosquitto.fullname" $ }}:1883"]
+      client_id = {{ include "hercules.telegraf.fullname" $  | quote }}
       topics = [
-        "airlogger/#"
+        {{ .topic | quote }}
       ]
-      name_override = "mqtt-airlogger"
+      name_override = {{ .measurementName | quote }}
       data_format = "value"
-      data_type = "float"
+      data_type = {{ .dataType | quote }}
+    {{- end }}
+    {{- range .Values.telegraf.mqttJsonTopics }}
+    [[inputs.mqtt_consumer]]
+      servers = ["tcp://{{ include "hercules.mosquitto.fullname" $ }}:1883"]
+      client_id = {{ include "hercules.telegraf.fullname" $  | quote }}
+      topics = [
+        {{ .topic | quote }}
+      ]
+      name_override = {{ .measurementName | quote }}
+      data_format = "json"
+{{- if .tagKeys }}
+      json_string_fields = {{ .tagKeys }}
+{{- end }}
+{{- if .stringFields }}
+      json_string_fields = {{ .stringFields }}
+{{- end }}
+    {{- end }}
