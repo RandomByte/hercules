@@ -11,6 +11,10 @@ mqttOnlineCheck:
   checkHostname: "google.com"
   mqttTopic: "Home/Online"
 
+mqttSonyBravia:
+  tvIp: "<TV IP>"
+  mqttTopicPrefix: "Home/TV/"
+
 http2mqtt:
   httpPort: 9001
 

@@ -7,6 +7,9 @@ mqttTraffic:
   apiKey: "<your Google Maps Web Service API key, see https://github.com/googlemaps/google-maps-services-js#api-keys>"
   mqttTopic: "Traffic/MyDailyRoute"
 
+mqttSonyBravia:
+  tvIp: "<TV IP>"
+
 influxdb:
   enabled: false
   adminPassword: "admin_password"

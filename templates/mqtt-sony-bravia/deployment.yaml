@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "hercules.mqttSonyBravia.fullname" . }}
+  labels:
+    {{- include "hercules.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: hercules-mqtt-sony-bravia
+      {{- include "hercules.selectorLabels" . | nindent 6 }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hercules-mqtt-sony-bravia
+        {{- include "hercules.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: mqtt-sony-bravia
+        image: randombyte/armhf-mqtt-sony-bravia:latest
+        env:
+        - name: MQTT_SB_TV_IP
+          value: {{ .Values.mqttSonyBravia.tvIp | quote }}
+        - name: MQTT_SB_MQTT_TOPIC_PREFIX
+          value: {{ .Values.mqttSonyBravia.mqttTopicPrefix | quote }}
+        - name: MQTT_SB_MQTT_BROKER
+          value: "{{ include "hercules.mosquitto.fullname" . }}"
