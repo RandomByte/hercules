@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: http2mqtt
-        image: randombyte/armhf-http2mqtt
+        image: randombyte/armhf-http2mqtt:2.0.0
         env:
         - name: BROKER_URL
           value: "mqtt://{{ include "hercules.mosquitto.fullname" . }}"
