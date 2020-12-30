@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: mqtt-online-check
-        image: randombyte/armhf-mqtt-online-check:3.0.0
+        image: randombyte/armhf-mqtt-online-check:3.1.0
         env:
         - name: MQTT_ONLINE_CHECK_MQTT_TOPIC_PREFIX
           value: {{ .Values.mqttOnlineCheck.mqttTopicPrefix | quote }}
