@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: mqtt-traffic
-        image: randombyte/armhf-mqtt-traffic:1.0.4
+        image: randombyte/armhf-mqtt-traffic:2.0.0
         env:
         - name: MQTT_TRAFFIC_ORIGIN
           value: {{ .Values.mqttTraffic.origin | quote }}
