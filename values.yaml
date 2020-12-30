@@ -11,6 +11,7 @@ mqttOnlineCheck:
   mqttTopicPrefix: "Home/Internet/"
 
 mqttSonyBravia:
+  enabled: false
   tvIp: "<TV IP>"
   mqttTopicPrefix: "Home/TV/"
 

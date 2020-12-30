@@ -8,6 +8,7 @@ mqttTraffic:
   mqttTopicPrefix: "Traffic/MyDailyRoute/"
 
 mqttSonyBravia:
+  enabled: false
   tvIp: "<TV IP>"
 
 influxdb:

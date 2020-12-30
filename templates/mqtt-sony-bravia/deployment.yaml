@@ -1,3 +1,4 @@
+{{- if .Values.mqttSonyBravia.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -26,3 +27,4 @@ spec:
           value: {{ .Values.mqttSonyBravia.mqttTopicPrefix | quote }}
         - name: MQTT_SB_MQTT_BROKER
           value: "{{ include "hercules.mosquitto.fullname" . }}"
+{{- end }}
