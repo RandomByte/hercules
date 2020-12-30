@@ -5,7 +5,7 @@ mqttTraffic:
   destination: "Stuttgart"
   language: "en"
   apiKey: "<your Google Maps Web Service API key, see https://github.com/googlemaps/google-maps-services-js#api-keys>"
-  mqttTopic: "Traffic/MyDailyRoute"
+  mqttTopicPrefix: "Traffic/MyDailyRoute/"
 
 mqttOnlineCheck:
   checkHostname: "google.com"
