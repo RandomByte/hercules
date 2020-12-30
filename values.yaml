@@ -33,8 +33,17 @@ external_influxdb_v2:
 telegraf:
   mqttValues:
     topics: |
-        ["Home/Air/+"]
-    measurementName: "home-air-quality"
+        ["Home/#", "Traffic/#"]
+    defaultMeasurementName: "home-mqtt"
+    subMeasurements:
+      - measurementName: home-air-quality
+        influxTopics: |
+          ["Home/Air/*"]
+        valueType: float
+      - measurementName: home-internet
+        influxTopics: |
+          ["Home/Internet/*"]
+        valueType: float
 
 grafana:
   enabled: false

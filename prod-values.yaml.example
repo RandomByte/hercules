@@ -23,6 +23,13 @@ external_influxdb_v2:
   organization: "myorganization"
   bucket: "mybucket"
 
+telegraf:
+  additionalSubMeasurements:
+    - measurementName: home-motion
+      influxTopics: |
+        ["Home/Motion/*"]
+      valueType: integer
+
 grafana:
   enabled: false
   adminPassword: "admin_password"

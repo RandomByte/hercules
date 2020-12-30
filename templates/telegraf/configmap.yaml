@@ -22,8 +22,36 @@ data:
 {{- end }}
     [[inputs.mqtt_consumer]]
       servers = ["tcp://{{ include "hercules.mosquitto.fullname" . }}:1883"]
-      client_id = {{ include "hercules.telegraf.fullname" .  | quote }}
+      client_id = {{ include "hercules.telegraf.fullname" . | quote }}
       topics = {{ .Values.telegraf.mqttValues.topics }}
-      name_override = {{ .Values.telegraf.mqttValues.measurementName | quote }}
+      name_override = {{ .Values.telegraf.mqttValues.defaultMeasurementName | quote }}
+      data_type = "string"
       data_format = "value"
-      data_type = "float"
+
+{{- range .Values.telegraf.mqttValues.subMeasurements }}
+    [[processors.converter]]
+      namepass = "mqtt_consumer"
+      [processors.converter.fields]
+        {{ .valueType }} = ["value"]
+      [processors.converter.tagpass]
+        topic = {{ .influxTopics }}
+    [[processors.override]]
+      namepass = "mqtt_consumer"
+      name_override = {{ .measurementName | quote}}
+      [processors.override.tagpass]
+        topic = {{ .influxTopics }}
+{{- end }}
+
+{{- range .Values.telegraf.additionalSubMeasurements }}
+    [[processors.converter]]
+      namepass = "mqtt_consumer"
+      [processors.converter.fields]
+        {{ .valueType }} = ["value"]
+      [processors.converter.tagpass]
+        topic = {{ .influxTopics }}
+    [[processors.override]]
+      namepass = "mqtt_consumer"
+      name_override = {{ .measurementName | quote}}
+      [processors.override.tagpass]
+        topic = {{ .influxTopics }}
+{{- end }}
