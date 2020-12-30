@@ -18,11 +18,9 @@ spec:
     spec:
       containers:
       - name: mqtt-online-check
-        image: randombyte/armhf-mqtt-online-check:latest
+        image: randombyte/armhf-mqtt-online-check:3.0.0
         env:
-        - name: MQTT_ONLINE_CHECK_HOSTNAME
-          value: {{ .Values.mqttOnlineCheck.checkHostname | quote }}
-        - name: MQTT_ONLINE_CHECK_MQTT_TOPIC
-          value: {{ .Values.mqttOnlineCheck.mqttTopic | quote }}
+        - name: MQTT_ONLINE_CHECK_MQTT_TOPIC_PREFIX
+          value: {{ .Values.mqttOnlineCheck.mqttTopicPrefix | quote }}
         - name: MQTT_ONLINE_CHECK_MQTT_BROKER
           value: "mqtt://{{ include "hercules.mosquitto.fullname" . }}"

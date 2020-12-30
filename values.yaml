@@ -8,8 +8,7 @@ mqttTraffic:
   mqttTopicPrefix: "Traffic/MyDailyRoute/"
 
 mqttOnlineCheck:
-  checkHostname: "google.com"
-  mqttTopic: "Home/Online"
+  mqttTopicPrefix: "Home/Internet/"
 
 mqttSonyBravia:
   tvIp: "<TV IP>"
