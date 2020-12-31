@@ -57,13 +57,6 @@ data:
 {{- end }}
 
     # TODO: Hardcoded Traffic/Work/Routes configuration
-    [[processors.converter]]
-      namepass = "mqtt_consumer"
-      [processors.converter.fields]
-        string = ["value"]
-      [processors.converter.tagpass]
-        topic = ["Traffic/Work/Routes"]
-
     [[processors.override]]
       namepass = "mqtt_consumer"
       name_override = "traffic-work"
@@ -91,3 +84,29 @@ data:
         float = ["value"]
       [processors.converter.tagpass]
         topic = ["Traffic/Work/Routes"]
+
+    # TODO: Hardcoded Home/Bluetooth/* configuration
+    # Extract MAC address from topic, set as tag and drop topic tag
+    [[processors.override]]
+      namepass = "mqtt_consumer"
+      name_override = "home-bluetooth"
+      [processors.override.tagpass]
+        topic = ["Home/Bluetooth/*"]
+
+    [[processors.regex]]
+      namepass = "mqtt_consumer"
+      [[processors.regex.tags]]
+        key = "topic"
+        pattern = "^Home/Bluetooth/(.+)$"
+        replacement = "${1}"
+        result_key = "mac"
+      [processors.regex.tagpass]
+        topic = ["Home/Bluetooth/*"]
+
+    [[processors.converter]]
+      namepass = "mqtt_consumer"
+      tagexclude = ["topic"]
+      [processors.converter.fields]
+        tag = ["mac"]
+      [processors.converter.tagpass]
+        topic = ["Home/Bluetooth/*"]
