@@ -79,6 +79,7 @@ data:
 
     [[processors.converter]]
       namepass = "mqtt_consumer"
+      tagexclude = ["topic"]
       [processors.converter.fields]
         tag = ["route"]
         float = ["value"]
