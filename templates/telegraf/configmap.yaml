@@ -55,3 +55,39 @@ data:
       [processors.override.tagpass]
         topic = {{ .influxTopics }}
 {{- end }}
+
+    # TODO: Hardcoded Traffic/Work/Routes configuration
+    [[processors.converter]]
+      namepass = "mqtt_consumer"
+      [processors.converter.fields]
+        string = ["value"]
+      [processors.converter.tagpass]
+        topic = ["Traffic/Work/Routes"]
+
+    [[processors.override]]
+      namepass = "mqtt_consumer"
+      name_override = "traffic-work"
+      [processors.override.tagpass]
+        topic = ["Traffic/Work/Routes"]
+
+    [[processors.regex]]
+      namepass = "mqtt_consumer"
+      [[processors.regex.fields]]
+        key = "value"
+        pattern = "^(.*);[0-9]+$"
+        replacement = "${1}"
+        result_key = "route"
+      [[processors.regex.fields]]
+        key = "value"
+        pattern = "^.*;([0-9]+)$"
+        replacement = "${1}"
+      [processors.regex.tagpass]
+        topic = ["Traffic/Work/Routes"]
+
+    [[processors.converter]]
+      namepass = "mqtt_consumer"
+      [processors.converter.fields]
+        tag = ["route"]
+        float = ["value"]
+      [processors.converter.tagpass]
+        topic = ["Traffic/Work/Routes"]
