@@ -9,11 +9,12 @@ mqttTraffic:
 
 mqttOnlineCheck:
   mqttTopicPrefix: "Home/Internet/"
+  assignToGigabitNode: false # Requires a node in the cluster to be labeled with "network-bandwidth=gigabit"
 
 mqttSonyBravia:
+  mqttTopicPrefix: "Home/TV/"
   enabled: false
   tvIp: "<TV IP>"
-  mqttTopicPrefix: "Home/TV/"
 
 http2mqtt:
   httpPort: 9001

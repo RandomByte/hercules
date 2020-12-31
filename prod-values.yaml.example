@@ -3,9 +3,11 @@ externalIp: <external ip>
 mqttTraffic:
   origin: "Frankfurt"
   destination: "Stuttgart"
-  language: en
+  language: "en"
   apiKey: "<your Google Maps Web Service API key, see https://github.com/googlemaps/google-maps-services-js#api-keys>"
-  mqttTopicPrefix: "Traffic/Work/"
+
+mqttOnlineCheck:
+  assignToGigabitNode: false # Requires a node in the cluster to be labeled with "network-bandwidth=gigabit"
 
 mqttSonyBravia:
   enabled: false
