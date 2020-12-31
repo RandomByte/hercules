@@ -42,20 +42,6 @@ data:
         topic = {{ .influxTopics }}
 {{- end }}
 
-{{- range .Values.telegraf.additionalSubMeasurements }}
-    [[processors.converter]]
-      namepass = "mqtt_consumer"
-      [processors.converter.fields]
-        {{ .valueType }} = ["value"]
-      [processors.converter.tagpass]
-        topic = {{ .influxTopics }}
-    [[processors.override]]
-      namepass = "mqtt_consumer"
-      name_override = {{ .measurementName | quote}}
-      [processors.override.tagpass]
-        topic = {{ .influxTopics }}
-{{- end }}
-
     # TODO: Hardcoded Traffic/Work/Routes configuration
     [[processors.override]]
       namepass = "mqtt_consumer"
@@ -111,3 +97,31 @@ data:
         tag = ["mac"]
       [processors.converter.tagpass]
         topic = ["Home/Bluetooth/*"]
+
+
+    # TODO: Hardcoded Home/Motion/* configuration
+    # Extract room from topic, set as tag and drop topic tag
+    [[processors.override]]
+      namepass = "mqtt_consumer"
+      name_override = "home-motion"
+      [processors.override.tagpass]
+        topic = ["Home/Motion/*"]
+
+    [[processors.regex]]
+      namepass = "mqtt_consumer"
+      [[processors.regex.tags]]
+        key = "topic"
+        pattern = "^Home/Motion/(.+)$"
+        replacement = "${1}"
+        result_key = "room"
+      [processors.regex.tagpass]
+        topic = ["Home/Motion/*"]
+
+    [[processors.converter]]
+      namepass = "mqtt_consumer"
+      tagexclude = ["topic"]
+      [processors.converter.fields]
+        tag = ["room"]
+        integer = ["value"]
+      [processors.converter.tagpass]
+        topic = ["Home/Motion/*"]
