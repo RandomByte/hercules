@@ -9,7 +9,7 @@ Links:
 curl -sfL https://get.k3s.io | sh -
 ```
 
-### Get K3s token for worker nodes to join
+### Get K3s Token For Worker Nodes To Join
 ```sh
 sudo cat /var/lib/rancher/k3s/server/node-token
 ```
