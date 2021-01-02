@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: mqtt-sony-bravia
-        image: randombyte/armhf-mqtt-sony-bravia:latest
+        image: randombyte/armhf-mqtt-sony-bravia:1.0.1
         env:
         - name: MQTT_SB_TV_IP
           value: {{ .Values.mqttSonyBravia.tvIp | quote }}
