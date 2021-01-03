@@ -43,5 +43,10 @@ spec:
                 operator: In
                 values:
                 - gigabit
+      tolerations:
+      - key: "dedicated"
+        operator: "Equal"
+        value: "gigabit"
+        effect: "NoSchedule"
 {{- end }}
 {{- end }}
