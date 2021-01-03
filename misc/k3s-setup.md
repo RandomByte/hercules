@@ -22,7 +22,7 @@ curl -sfL https://get.k3s.io | K3S_URL=https://<CONTROL PLANE IP>:6443 K3S_TOKEN
 
 To pass additional options as documented [here](https://rancher.com/docs/k3s/latest/en/installation/install-options/agent-config/) (kubelet options [here](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/)):
 ```sh
-curl -sfL https://get.k3s.io | K3S_URL=https://<CONTROL PLANE IP>:6443 K3S_TOKEN=<TOKEN> sh -s - --kubelet-arg="max-pods=2"
+curl -sfL https://get.k3s.io | K3S_URL=https://<CONTROL PLANE IP>:6443 K3S_TOKEN=<TOKEN> sh -s - --kubelet-arg="max-pods=3"
 ```
 
 ## Label Nodes
