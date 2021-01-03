@@ -33,6 +33,15 @@ spec:
           value: ""
         - name: CRON
           value: "0,30 * * * *" # "At minute 0 and 30"
+        livenessProbe:
+          exec:
+            command:
+            - /bin/bash
+            - -c
+            - "! /usr/bin/pgrep speedtest2mqtt"
+          initialDelaySeconds: 15
+          periodSeconds: 60
+          failureThreshold: 5
 {{- if .Values.speedtest.assignToGigabitNode }}
       affinity:
         nodeAffinity:
