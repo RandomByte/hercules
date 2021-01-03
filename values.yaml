@@ -7,11 +7,8 @@ mqttTraffic:
   apiKey: "<your Google Maps Web Service API key, see https://github.com/googlemaps/google-maps-services-js#api-keys>"
   mqttTopicPrefix: "Traffic/Work/"
 
-mqttOnlineCheck:
-  mqttTopicPrefix: "Home/Internet/"
-
 speedtest:
-  mqttTopicPrefix: "HomeTest/Internet"
+  mqttTopic: "Internet"
   enabled: true
   assignToGigabitNode: false # Requires a node in the cluster to be labeled with "network-bandwidth=gigabit"
 
@@ -39,16 +36,16 @@ external_influxdb_v2:
 telegraf:
   mqttValues:
     topics: |
-        ["Home/#", "Traffic/#"]
+        ["Home/#", "Traffic/#", "Internet/+"]
     defaultMeasurementName: "home-mqtt"
     subMeasurements:
       - measurementName: home-air-quality
         influxTopics: |
           ["Home/Air/*"]
         valueType: float
-      - measurementName: home-internet
+      - measurementName: internet
         influxTopics: |
-          ["Home/Internet/*"]
+          ["Internet/*"]
         valueType: float
 
 grafana:

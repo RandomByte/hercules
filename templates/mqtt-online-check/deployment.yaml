@@ -1,3 +1,4 @@
+{{- if .Values.speedtest.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -18,9 +19,10 @@ spec:
     spec:
       containers:
       - name: mqtt-online-check
-        image: randombyte/armhf-mqtt-online-check:3.1.0
+        image: randombyte/armhf-mqtt-online-check:3.2.0
         env:
-        - name: MQTT_ONLINE_CHECK_MQTT_TOPIC_PREFIX
-          value: {{ .Values.mqttOnlineCheck.mqttTopicPrefix | quote }}
+        - name: MQTT_ONLINE_CHECK_MQTT_TOPIC
+          value: "{{ .Values.speedtest.mqttTopic }}/connectivity"
         - name: MQTT_ONLINE_CHECK_MQTT_BROKER
           value: "mqtt://{{ include "hercules.mosquitto.fullname" . }}"
+{{- end }}

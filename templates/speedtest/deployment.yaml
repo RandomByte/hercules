@@ -22,7 +22,7 @@ spec:
         image: moafrancky/speedtest2mqtt@sha256:066657b511feb98af9e7c4623b68cf2969c73d8189051c6c7f7ca996cb808550
         env:
         - name: MQTT_TOPIC
-          value: {{ .Values.speedtest.mqttTopicPrefix | quote }}
+          value: {{ .Values.speedtest.mqttTopic | quote }}
         - name: MQTT_HOST
           value: "{{ include "hercules.mosquitto.fullname" . }}"
         - name: MQTT_OPTIONS
