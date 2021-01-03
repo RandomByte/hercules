@@ -6,7 +6,8 @@ mqttTraffic:
   language: "en"
   apiKey: "<your Google Maps Web Service API key, see https://github.com/googlemaps/google-maps-services-js#api-keys>"
 
-mqttOnlineCheck:
+speedtest:
+  enabled: true
   assignToGigabitNode: false # Requires a node in the cluster to be labeled with "network-bandwidth=gigabit"
 
 mqttSonyBravia:

@@ -9,6 +9,10 @@ mqttTraffic:
 
 mqttOnlineCheck:
   mqttTopicPrefix: "Home/Internet/"
+
+speedtest:
+  mqttTopicPrefix: "HomeTest/Internet"
+  enabled: true
   assignToGigabitNode: false # Requires a node in the cluster to be labeled with "network-bandwidth=gigabit"
 
 mqttSonyBravia:

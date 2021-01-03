@@ -1,0 +1,47 @@
+{{- if .Values.speedtest.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "hercules.speedtest.fullname" . }}
+  labels:
+    {{- include "hercules.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: hercules-speedtest
+      {{- include "hercules.selectorLabels" . | nindent 6 }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hercules-speedtest
+        {{- include "hercules.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: speedtest
+        image: moafrancky/speedtest2mqtt@sha256:066657b511feb98af9e7c4623b68cf2969c73d8189051c6c7f7ca996cb808550
+        env:
+        - name: MQTT_TOPIC
+          value: {{ .Values.speedtest.mqttTopicPrefix | quote }}
+        - name: MQTT_HOST
+          value: "{{ include "hercules.mosquitto.fullname" . }}"
+        - name: MQTT_OPTIONS
+          value: "-q 1"
+        - name: MQTT_USER
+          value: ""
+        - name: MQTT_PASS
+          value: ""
+        - name: CRON
+          value: "0,30 * * * *" # "At minute 0 and 30"
+{{- if .Values.speedtest.assignToGigabitNode }}
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: network-bandwidth
+                operator: In
+                values:
+                - gigabit
+{{- end }}
+{{- end }}

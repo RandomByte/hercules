@@ -24,7 +24,3 @@ spec:
           value: {{ .Values.mqttOnlineCheck.mqttTopicPrefix | quote }}
         - name: MQTT_ONLINE_CHECK_MQTT_BROKER
           value: "mqtt://{{ include "hercules.mosquitto.fullname" . }}"
-{{- if .Values.mqttOnlineCheck.assignToGigabitNode }}
-      nodeSelector:
-        network-bandwidth: gigabit
-{{- end }}
