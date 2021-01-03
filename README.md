@@ -1,17 +1,15 @@
 # [Hercules](https://github.com/RandomByte/hercules) - Random Home Automation Stuff on Kubernetes
 
-🚧 Work in progress.
+🚧 Work in progress. Currently very much tuned for my use cases.
 
-**All Docker images used in this project are built for the armhf architecture (Raspberry Pi et al.) only.**  
-However, it should be fairly easy to set this up on any other architectures, you just need to build the Docker images yourself.
-
+**All Docker images used in this project are built for the armhf architecture (Raspberry Pi et al.) only.**
 
 ## Prerequisites
 1. Have a running Kubernetes cluster on one or more Raspberry Pis
 	- *The Docker images used in this project currently only support the Pis armhf architecture*
 	- I highly recommend checking [this repository](https://github.com/alexellis/k8s-on-raspbian) for information on how setting up Kubernetes on Raspbian.
-	- Personally I use [k3s](https://k3s.io/)
-1. [Helm](https://helm.sh/) v3
+	- Personally I use [k3s](https://k3s.io/). I added some notes to [misc/k3s-setup.md](./misc/k3s-setup.md)
+1. Have [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) and [Helm](https://helm.sh/) (v3) installed on your development system
 
 ## Usage
 1. Clone this repository and navigate into it
@@ -31,6 +29,12 @@ However, it should be fairly easy to set this up on any other architectures, you
 	``` sh
 	helm install -f prod-values.yaml hercules .
 	```
+
+## Upgrade
+To apply changes to the running cluster execute:
+```sh
+helm upgrade -f prod-values.yaml hercules .
+```
 
 ## Uninstall
 As easy as:
