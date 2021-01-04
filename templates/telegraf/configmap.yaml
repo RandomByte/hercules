@@ -6,6 +6,8 @@ metadata:
     {{- include "hercules.labels" . | nindent 4 }}
 data:
   telegraf.conf: |+
+    #[agent]
+    #  debug = true
 {{- if .Values.influxdb.enabled }}
     [[outputs.influxdb]]
       urls = ["http://{{ include "hercules.influxdb.fullname" . }}:8086"]
@@ -30,12 +32,16 @@ data:
 
 {{- range .Values.telegraf.mqttValues.subMeasurements }}
     [[processors.converter]]
+      order = 1
+      alias = "{{ .measurementName }}-{{ .valueType }}-converter"
       namepass = "mqtt_consumer"
       [processors.converter.fields]
         {{ .valueType }} = ["value"]
       [processors.converter.tagpass]
         topic = {{ .influxTopics }}
     [[processors.override]]
+      order = 2
+      alias = "{{ .measurementName }}-measurement-name-override"
       namepass = "mqtt_consumer"
       name_override = {{ .measurementName | quote}}
       [processors.override.tagpass]
@@ -44,12 +50,16 @@ data:
 
     # TODO: Hardcoded Traffic/Work/Routes configuration
     [[processors.override]]
+      order = 1
+      alias = "traffic-work-override"
       namepass = "mqtt_consumer"
       name_override = "traffic-work"
       [processors.override.tagpass]
         topic = ["Traffic/Work/Routes"]
 
     [[processors.regex]]
+      order = 2
+      alias = "traffic-work-regex"
       namepass = "mqtt_consumer"
       [[processors.regex.fields]]
         key = "value"
@@ -64,6 +74,8 @@ data:
         topic = ["Traffic/Work/Routes"]
 
     [[processors.converter]]
+      order = 3
+      alias = "traffic-work-converter"
       namepass = "mqtt_consumer"
       tagexclude = ["topic"]
       [processors.converter.fields]
@@ -72,15 +84,19 @@ data:
       [processors.converter.tagpass]
         topic = ["Traffic/Work/Routes"]
 
-    # TODO: Hardcoded Home/Bluetooth/* configuration
+    # TODO: Hardcoded Home/Bluetooth configuration
     # Extract MAC address from topic, set as tag and drop topic tag
     [[processors.override]]
+      order = 4
+      alias = "home-bluetooth-override"
       namepass = "mqtt_consumer"
       name_override = "home-bluetooth"
       [processors.override.tagpass]
         topic = ["Home/Bluetooth/*"]
 
     [[processors.regex]]
+      order = 5
+      alias = "home-bluetooth-regex"
       namepass = "mqtt_consumer"
       [[processors.regex.tags]]
         key = "topic"
@@ -91,6 +107,8 @@ data:
         topic = ["Home/Bluetooth/*"]
 
     [[processors.converter]]
+      order = 6
+      alias = "home-bluetooth-converter"
       namepass = "mqtt_consumer"
       tagexclude = ["topic"]
       [processors.converter.fields]
@@ -99,15 +117,19 @@ data:
         topic = ["Home/Bluetooth/*"]
 
 
-    # TODO: Hardcoded Home/Motion/* configuration
+    # TODO: Hardcoded Home/Motion configuration
     # Extract room from topic, set as tag and drop topic tag
     [[processors.override]]
+      order = 7
+      alias = "home-motion-override"
       namepass = "mqtt_consumer"
       name_override = "home-motion"
       [processors.override.tagpass]
         topic = ["Home/Motion/*"]
 
     [[processors.regex]]
+      order = 8
+      alias = "home-motion-regex"
       namepass = "mqtt_consumer"
       [[processors.regex.tags]]
         key = "topic"
@@ -118,6 +140,8 @@ data:
         topic = ["Home/Motion/*"]
 
     [[processors.converter]]
+      order = 9
+      alias = "home-motion-converter"
       namepass = "mqtt_consumer"
       tagexclude = ["topic"]
       [processors.converter.fields]
