@@ -91,7 +91,7 @@ data:
     # ===========================================
     # Internet service
     [[processors.override]]
-      order = 4
+      order = 10
       alias = "internet-override"
       namepass = "mqtt_consumer"
       name_override = {{ .Values.mqttServices.internet.measurementName | quote }}
@@ -99,7 +99,7 @@ data:
         topic = ["{{ .Values.mqttServices.internet.topicPrefix }}*"]
 
     [[processors.converter]]
-      order = 5
+      order = 11
       alias = "internet-converter"
       namepass = "mqtt_consumer"
       [processors.converter.fields]
@@ -115,7 +115,7 @@ data:
     # ===========================================
     # AirQuality service
     [[processors.override]]
-      order = 6
+      order = 20
       alias = "airQuality-override"
       namepass = "mqtt_consumer"
       name_override = {{ .Values.mqttServices.airQuality.measurementName | quote }}
@@ -123,7 +123,7 @@ data:
         topic = ["{{ .Values.mqttServices.airQuality.topicPrefix }}*"]
 
     [[processors.converter]]
-      order = 7
+      order = 21
       alias = "airQuality-converter"
       namepass = "mqtt_consumer"
       [processors.converter.fields]
@@ -137,7 +137,7 @@ data:
     # Bluetooth service
     # Extract MAC address from topic, set as tag and drop topic tag
     [[processors.override]]
-      order = 8
+      order = 30
       alias = "bluetooth-override"
       namepass = "mqtt_consumer"
       name_override = {{ .Values.mqttServices.bluetooth.measurementName | quote }}
@@ -145,7 +145,7 @@ data:
         topic = ["{{ .Values.mqttServices.bluetooth.topicPrefix }}*"]
 
     [[processors.regex]]
-      order = 9
+      order = 31
       alias = "bluetooth-regex"
       namepass = "mqtt_consumer"
       [[processors.regex.tags]]
@@ -157,7 +157,7 @@ data:
         topic = ["{{ .Values.mqttServices.bluetooth.topicPrefix }}*"]
 
     [[processors.converter]]
-      order = 10
+      order = 32
       alias = "bluetooth-converter"
       namepass = "mqtt_consumer"
       tagexclude = ["topic"]
@@ -173,7 +173,7 @@ data:
     # Motion service
     # Extract room from topic, set as tag and drop topic tag
     [[processors.override]]
-      order = 11
+      order = 40
       alias = "motion-override"
       namepass = "mqtt_consumer"
       name_override = {{ .Values.mqttServices.motion.measurementName | quote }}
@@ -181,7 +181,7 @@ data:
         topic = ["{{ .Values.mqttServices.motion.topicPrefix }}*"]
 
     [[processors.regex]]
-      order = 12
+      order = 41
       alias = "motion-regex"
       namepass = "mqtt_consumer"
       [[processors.regex.tags]]
@@ -193,7 +193,7 @@ data:
         topic = ["{{ .Values.mqttServices.motion.topicPrefix }}*"]
 
     [[processors.converter]]
-      order = 13
+      order = 42
       alias = "motion-converter"
       namepass = "mqtt_consumer"
       tagexclude = ["topic"]
