@@ -37,6 +37,8 @@ data:
     [[inputs.mqtt_consumer]]
       servers = ["tcp://{{ include "hercules.mosquitto.fullname" . }}:1883"]
       client_id = {{ include "hercules.telegraf.fullname" . | quote }}
+      qos = 1
+      persistent_session = true
       topics = [
 {{- range $key, $val := .Values.mqttServices }}
 {{- if and $val.enabled $val.measurementName }}
