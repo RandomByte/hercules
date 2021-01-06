@@ -1,25 +1,5 @@
 externalIp: <external ip>
 
-mqttTraffic:
-  origin: "Frankfurt"
-  destination: "Stuttgart"
-  language: "en"
-  apiKey: "<your Google Maps Web Service API key, see https://github.com/googlemaps/google-maps-services-js#api-keys>"
-  mqttTopicPrefix: "Traffic/Work/"
-
-speedtest:
-  mqttTopic: "Internet"
-  enabled: true
-  assignToGigabitNode: false # Requires a node in the cluster to be labeled with "network-bandwidth=gigabit"
-
-mqttSonyBravia:
-  mqttTopicPrefix: "Home/TV/"
-  enabled: false
-  tvIp: "<TV IP>"
-
-http2mqtt:
-  httpPort: 9001
-
 influxdb:
   enabled: false
   adminPassword: "admin_password"
@@ -33,20 +13,47 @@ external_influxdb_v2:
   organization: "myorganization"
   bucket: "mybucket"
 
-telegraf:
-  mqttValues:
-    topics: |
-        ["Home/#", "Traffic/#", "Internet/+"]
-    defaultMeasurementName: "home-mqtt"
-    subMeasurements:
-      - measurementName: home-air-quality
-        influxTopics: |
-          ["Home/Air/*"]
-        valueType: float
-      - measurementName: internet
-        influxTopics: |
-          ["Internet/*"]
-        valueType: float
+mqttServices:
+  traffic:
+    enabled: true
+    measurementName: "traffic-work"
+    topicPrefix: "Traffic/Work/"
+    configuration:
+      origin: "Frankfurt"
+      destination: "Stuttgart"
+      language: "en"
+      apiKey: "<your Google Maps Web Service API key, see https://github.com/googlemaps/google-maps-services-js#api-keys>"
+
+  internet:
+    enabled: true
+    measurementName: "home-internet"
+    topicPrefix: "Home/Internet/"
+    configuration:
+      assignToGigabitNode: false # Requires a node in the cluster to be labeled with "network-bandwidth=gigabit"
+
+  sonyBravia:
+    enabled: false
+    topicPrefix: "Home/TV/"
+    configuration:
+      tvIp: "<TV IP>"
+
+  airQuality:
+    enabled: false
+    measurementName: "home-air-quality"
+    topicPrefix: "Home/Air/"
+
+  bluetooth:
+    enabled: false
+    measurementName: "home-bluetooth"
+    topicPrefix: "Home/Bluetooth/"
+
+  motion:
+    enabled: false
+    measurementName: "home-motion"
+    topicPrefix: "Home/Motion/"
+
+http2mqtt:
+  httpPort: 9001
 
 grafana:
   enabled: false

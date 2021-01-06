@@ -1,4 +1,4 @@
-{{- if .Values.speedtest.enabled }}
+{{- if .Values.mqttServices.internet.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -22,7 +22,7 @@ spec:
         image: moafrancky/speedtest2mqtt@sha256:066657b511feb98af9e7c4623b68cf2969c73d8189051c6c7f7ca996cb808550
         env:
         - name: MQTT_TOPIC
-          value: {{ .Values.speedtest.mqttTopic | quote }}
+          value: {{ .Values.mqttServices.internet.topicPrefix | trimSuffix "/" | quote }}
         - name: MQTT_HOST
           value: "{{ include "hercules.mosquitto.fullname" . }}"
         - name: MQTT_OPTIONS
@@ -42,7 +42,7 @@ spec:
           initialDelaySeconds: 15
           periodSeconds: 60
           failureThreshold: 5
-{{- if .Values.speedtest.assignToGigabitNode }}
+{{- if .Values.mqttServices.internet.configuration.assignToGigabitNode }}
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -52,10 +52,10 @@ spec:
                 operator: In
                 values:
                 - gigabit
+{{- end }}
       tolerations:
       - key: "dedicated"
         operator: "Equal"
         value: "gigabit"
         effect: "NoSchedule"
-{{- end }}
 {{- end }}

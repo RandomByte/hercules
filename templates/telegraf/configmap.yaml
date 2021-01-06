@@ -15,51 +15,53 @@ data:
       username = "hercules"
       password = {{ .Values.influxdb.userPassword | quote }}
       skip_database_creation = true
+{{- if and .Values.mqttServices.internet.enabled .Values.mqttServices.internet.measurementName }}
+      # Exclude string-value topics from internet measurement
+      [outputs.influxdb.tagdrop]
+        topic = ["{{ .Values.mqttServices.internet.topicPrefix }}timestamp", "{{ .Values.mqttServices.internet.topicPrefix }}server/*"]
+
+{{- end }}
 {{- else if .Values.external_influxdb_v2.enabled }}
     [[outputs.influxdb_v2]]
       urls = [{{ .Values.external_influxdb_v2.url | quote }}]
       token = {{ .Values.external_influxdb_v2.token | quote }}
       organization = {{ .Values.external_influxdb_v2.organization | quote }}
       bucket = {{ .Values.external_influxdb_v2.bucket | quote }}
+{{- if and .Values.mqttServices.internet.enabled .Values.mqttServices.internet.measurementName }}
+      # Exclude string-value topics from internet measurement
+      [outputs.influxdb_v2.tagdrop]
+        topic = ["{{ .Values.mqttServices.internet.topicPrefix }}timestamp", "{{ .Values.mqttServices.internet.topicPrefix }}server/*"]
+
+{{- end }}
 {{- end }}
     [[inputs.mqtt_consumer]]
       servers = ["tcp://{{ include "hercules.mosquitto.fullname" . }}:1883"]
       client_id = {{ include "hercules.telegraf.fullname" . | quote }}
-      topics = {{ .Values.telegraf.mqttValues.topics }}
-      name_override = {{ .Values.telegraf.mqttValues.defaultMeasurementName | quote }}
+      topics = [
+{{- range $key, $val := .Values.mqttServices }}
+{{- if and $val.enabled $val.measurementName }}
+        "{{ $val.topicPrefix }}+",
+{{- end }}
+{{- end }}
+      ]
+      name_override = "unhandled-mqtt-topics"
       data_type = "string"
       data_format = "value"
 
-{{- range .Values.telegraf.mqttValues.subMeasurements }}
-    [[processors.converter]]
-      order = 1
-      alias = "{{ .measurementName }}-{{ .valueType }}-converter"
-      namepass = "mqtt_consumer"
-      [processors.converter.fields]
-        {{ .valueType }} = ["value"]
-      [processors.converter.tagpass]
-        topic = {{ .influxTopics }}
-    [[processors.override]]
-      order = 2
-      alias = "{{ .measurementName }}-measurement-name-override"
-      namepass = "mqtt_consumer"
-      name_override = {{ .measurementName | quote}}
-      [processors.override.tagpass]
-        topic = {{ .influxTopics }}
-{{- end }}
-
-    # TODO: Hardcoded Traffic/Work/Routes configuration
+{{- if and .Values.mqttServices.traffic.enabled .Values.mqttServices.traffic.measurementName }}
+    # ===========================================
+    # Traffic service
     [[processors.override]]
       order = 1
-      alias = "traffic-work-override"
+      alias = "traffic-override"
       namepass = "mqtt_consumer"
-      name_override = "traffic-work"
+      name_override = {{ .Values.mqttServices.traffic.measurementName | quote }}
       [processors.override.tagpass]
-        topic = ["Traffic/Work/Routes"]
+        topic = ["{{ .Values.mqttServices.traffic.topicPrefix }}*"]
 
     [[processors.regex]]
       order = 2
-      alias = "traffic-work-regex"
+      alias = "traffic-regex"
       namepass = "mqtt_consumer"
       [[processors.regex.fields]]
         key = "value"
@@ -75,7 +77,7 @@ data:
 
     [[processors.converter]]
       order = 3
-      alias = "traffic-work-converter"
+      alias = "traffic-converter"
       namepass = "mqtt_consumer"
       tagexclude = ["topic"]
       [processors.converter.fields]
@@ -83,69 +85,121 @@ data:
         float = ["value"]
       [processors.converter.tagpass]
         topic = ["Traffic/Work/Routes"]
+{{- end }}
 
-    # TODO: Hardcoded Home/Bluetooth configuration
-    # Extract MAC address from topic, set as tag and drop topic tag
+{{- if and .Values.mqttServices.internet.enabled .Values.mqttServices.internet.measurementName }}
+    # ===========================================
+    # Internet service
     [[processors.override]]
       order = 4
-      alias = "home-bluetooth-override"
+      alias = "internet-override"
       namepass = "mqtt_consumer"
-      name_override = "home-bluetooth"
+      name_override = {{ .Values.mqttServices.internet.measurementName | quote }}
       [processors.override.tagpass]
-        topic = ["Home/Bluetooth/*"]
+        topic = ["{{ .Values.mqttServices.internet.topicPrefix }}*"]
+
+    [[processors.converter]]
+      order = 5
+      alias = "internet-converter"
+      namepass = "mqtt_consumer"
+      [processors.converter.fields]
+        float = ["value"]
+      [processors.converter.tagpass]
+        topic = ["{{ .Values.mqttServices.internet.topicPrefix }}*"]
+      [processors.converter.tagdrop]
+        topic = ["{{ .Values.mqttServices.internet.topicPrefix }}timestamp", "{{ .Values.mqttServices.internet.topicPrefix }}server/*"]
+
+{{- end }}
+
+{{- if and .Values.mqttServices.airQuality.enabled .Values.mqttServices.airQuality.measurementName }}
+    # ===========================================
+    # AirQuality service
+    [[processors.override]]
+      order = 6
+      alias = "airQuality-override"
+      namepass = "mqtt_consumer"
+      name_override = {{ .Values.mqttServices.airQuality.measurementName | quote }}
+      [processors.override.tagpass]
+        topic = ["{{ .Values.mqttServices.airQuality.topicPrefix }}*"]
+
+    [[processors.converter]]
+      order = 7
+      alias = "airQuality-converter"
+      namepass = "mqtt_consumer"
+      [processors.converter.fields]
+        float = ["value"]
+      [processors.converter.tagpass]
+        topic = ["{{ .Values.mqttServices.airQuality.topicPrefix }}*"]
+{{- end }}
+
+{{- if and .Values.mqttServices.bluetooth.enabled .Values.mqttServices.bluetooth.measurementName }}
+    # ===========================================
+    # Bluetooth service
+    # Extract MAC address from topic, set as tag and drop topic tag
+    [[processors.override]]
+      order = 8
+      alias = "bluetooth-override"
+      namepass = "mqtt_consumer"
+      name_override = {{ .Values.mqttServices.bluetooth.measurementName | quote }}
+      [processors.override.tagpass]
+        topic = ["{{ .Values.mqttServices.bluetooth.topicPrefix }}*"]
 
     [[processors.regex]]
-      order = 5
-      alias = "home-bluetooth-regex"
+      order = 9
+      alias = "bluetooth-regex"
       namepass = "mqtt_consumer"
       [[processors.regex.tags]]
         key = "topic"
-        pattern = "^Home/Bluetooth/(.+)$"
+        pattern = "^{{ .Values.mqttServices.bluetooth.topicPrefix }}(.+)$"
         replacement = "${1}"
         result_key = "mac"
       [processors.regex.tagpass]
-        topic = ["Home/Bluetooth/*"]
+        topic = ["{{ .Values.mqttServices.bluetooth.topicPrefix }}*"]
 
     [[processors.converter]]
-      order = 6
-      alias = "home-bluetooth-converter"
+      order = 10
+      alias = "bluetooth-converter"
       namepass = "mqtt_consumer"
       tagexclude = ["topic"]
       [processors.converter.fields]
         tag = ["mac"]
       [processors.converter.tagpass]
-        topic = ["Home/Bluetooth/*"]
+        topic = ["{{ .Values.mqttServices.bluetooth.topicPrefix }}*"]
+{{- end }}
 
 
-    # TODO: Hardcoded Home/Motion configuration
+{{- if and .Values.mqttServices.motion.enabled .Values.mqttServices.motion.measurementName }}
+    # ===========================================
+    # Motion service
     # Extract room from topic, set as tag and drop topic tag
     [[processors.override]]
-      order = 7
-      alias = "home-motion-override"
+      order = 11
+      alias = "motion-override"
       namepass = "mqtt_consumer"
-      name_override = "home-motion"
+      name_override = {{ .Values.mqttServices.motion.measurementName | quote }}
       [processors.override.tagpass]
-        topic = ["Home/Motion/*"]
+        topic = ["{{ .Values.mqttServices.motion.topicPrefix }}*"]
 
     [[processors.regex]]
-      order = 8
-      alias = "home-motion-regex"
+      order = 12
+      alias = "motion-regex"
       namepass = "mqtt_consumer"
       [[processors.regex.tags]]
         key = "topic"
-        pattern = "^Home/Motion/(.+)$"
+        pattern = "^{{ .Values.mqttServices.motion.topicPrefix }}(.+)$"
         replacement = "${1}"
         result_key = "room"
       [processors.regex.tagpass]
-        topic = ["Home/Motion/*"]
+        topic = ["{{ .Values.mqttServices.motion.topicPrefix }}*"]
 
     [[processors.converter]]
-      order = 9
-      alias = "home-motion-converter"
+      order = 13
+      alias = "motion-converter"
       namepass = "mqtt_consumer"
       tagexclude = ["topic"]
       [processors.converter.fields]
         tag = ["room"]
         integer = ["value"]
       [processors.converter.tagpass]
-        topic = ["Home/Motion/*"]
+        topic = ["{{ .Values.mqttServices.motion.topicPrefix }}*"]
+{{- end }}

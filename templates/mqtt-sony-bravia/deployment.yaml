@@ -1,4 +1,4 @@
-{{- if .Values.mqttSonyBravia.enabled }}
+{{- if .Values.mqttServices.sonyBravia.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -22,9 +22,9 @@ spec:
         image: randombyte/armhf-mqtt-sony-bravia:1.0.1
         env:
         - name: MQTT_SB_TV_IP
-          value: {{ .Values.mqttSonyBravia.tvIp | quote }}
+          value: {{ .Values.mqttServices.sonyBravia.configuration.tvIp | quote }}
         - name: MQTT_SB_MQTT_TOPIC_PREFIX
-          value: {{ .Values.mqttSonyBravia.mqttTopicPrefix | quote }}
+          value: {{ .Values.mqttServices.sonyBravia.topicPrefix | quote }}
         - name: MQTT_SB_MQTT_BROKER
           value: "{{ include "hercules.mosquitto.fullname" . }}"
 {{- end }}

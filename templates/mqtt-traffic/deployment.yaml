@@ -1,3 +1,4 @@
+{{- if .Values.mqttServices.traffic.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -21,14 +22,15 @@ spec:
         image: randombyte/armhf-mqtt-traffic:2.1.0
         env:
         - name: MQTT_TRAFFIC_ORIGIN
-          value: {{ .Values.mqttTraffic.origin | quote }}
+          value: {{ .Values.mqttServices.traffic.configuration.origin | quote }}
         - name: MQTT_TRAFFIC_DESTINATION
-          value: {{ .Values.mqttTraffic.destination | quote }}
+          value: {{ .Values.mqttServices.traffic.configuration.destination | quote }}
         - name: MQTT_TRAFFIC_LANGUAGE
-          value: {{ .Values.mqttTraffic.language | quote }}
+          value: {{ .Values.mqttServices.traffic.configuration.language | quote }}
         - name: MQTT_TRAFFIC_API_KEY
-          value: {{ .Values.mqttTraffic.apiKey | quote }}
+          value: {{ .Values.mqttServices.traffic.configuration.apiKey | quote }}
         - name: MQTT_TRAFFIC_MQTT_BROKER
           value: "mqtt://{{ include "hercules.mosquitto.fullname" . }}"
         - name: MQTT_TRAFFIC_MQTT_TOPIC_PREFIX
-          value: {{ .Values.mqttTraffic.mqttTopicPrefix | quote }}
+          value: {{ .Values.mqttServices.traffic.topicPrefix | quote }}
+{{- end }}
